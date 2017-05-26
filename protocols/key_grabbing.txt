@@ -1,0 +1,57 @@
+Key grabbing
+
+
+1 Overview and rationale
+
+1.1 Overview
+
+Tells the wayland server to route specific key events to *this* wayland connection.
+
+
+1.2 Rationale
+
+Many programs want to receive specific keyboard events without having the input focus on themselves.
+Examples include pressing printscreen to save a screenshot, shift+alt+enter to open a console window, super(the windows key)+1-5 to set the brightness of a monitor, etc.
+
+2 Protocol
+
+2.1 Request
+
+2.1.1 Type
+
+WXT_GRAB_KEY
+
+2.1.2 Data
+
+[uint8:1 repeat; struct libinput_event_keyboard event]
+
+event:
+The libinput format for key events (a struct libinput_event_keyboard). Aparently opaque.
+
+repeat:
+Flag that tells the wayland server to keep routing events matching  to this client.
+If not set, the server only sends the first event and sends the rest to the window that has the input focus.
+
+
+2.3 Reply
+
+[uint8 flag; struct libinput_event_keyboard event]
+
+flag:
+WX_NOT_SUPPORTED = requested action is not supported
+WX_OK            = request granted
+WX_UNKNOWN       = specified key does not match any of the keys the server knows about
+WX_NOPERMISSION  = the client does not have permission to grab this key
+WX_EFORMAT       = specified key is in wrong format
+WX_TAKEN         = specified key is already grabbed by another window
+
+event:
+The requested event.
+
+
+3 Design decisions and alternatives
+
+One key request per message as it simplifies parsing the return message.
+TODO:
+Add "key_grabbing_check.txt", or something, as a protocol that the client can use to find out what keys the server *can* send (a list, basically).
+Think about the returned flags a little.

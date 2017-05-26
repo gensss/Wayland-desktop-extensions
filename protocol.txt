@@ -1,0 +1,40 @@
+The "WX" protocol is a layer inside the wayland protocol. (if it ever gets to be, that is)
+
+
+All of the protocols specified here are wrapped in the "WX" protocol.
+
+
+The WX protocol:
+
+[uint16 type; uint16 padding/other/future_stuff; data..]
+
+Where "type" specifies what extension this message talks.
+"data.." denotes the payload of the message.
+
+
+Format:
+
+The types of data are u/int8, u/int16, u/int32, u/int64, float(32) and double(64). Basically standard C with stdint.h.
+TODO: Not sure if floats needed.
+
+Square brackets denote the message.
+Semicolon (";") splits the data definitions.
+Two dots ("..") specify that the data has no fixed size (the "data.." in the example above).
+Colon (":"), number of bits, same as C bitfield.
+
+
+Example of a full message for grabbing a key:
+
+[wayland_header; uint16 type; uint16 padding; uint8:1 repeat; struct libinput_event_keyboard event]
+
+
+Terminology:
+"wayland server" or just "server" refers to the wayland "compositor" or "shell".
+"client" is the client to that server.
+
+
+TODO:
+Use cookies ?
+Everywhere or where needed ?
+Read the wayland protocol horrid XML. Maybe it has cookies.
+Implement the rest. (there will be a permissions model. A proper one)

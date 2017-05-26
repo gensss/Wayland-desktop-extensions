@@ -1,0 +1,61 @@
+Screenshotting
+
+
+1 Overview and rationale
+
+1.1 Overview
+
+Asks the wayland server to send a screenshot of a specified screen to this client.
+
+1.2 Rationale
+
+Screenshots are popular.
+
+
+2 Protocol
+
+2.1 Request
+
+2.1.1 Type
+
+WXT_REQUEST_SCREENSHOT
+
+2.1.2 Data
+
+[uint8 screen_number; uint8 format]
+
+screen_number:
+The ID of the screen to be shot.
+
+format:
+Requested image format.
+WX_PIX_RGB8
+WX_PIX_RGBA8
+WX_PIX_GRAY8
+
+
+2.3 Reply
+
+[uint8 flag; uint8 pad; uint16 pad; uint32 len; data..]
+
+flag:
+WX_NOT_SUPPORTED = requested action is not supported
+WX_OK            = request granted
+WX_NOPERMISSION  = the client does not have permission to grab this screenshot
+WXS_EFORMAT      = specified format is not supported by the server
+WXS_ESCREEN      = requested screen can not be screenshot
+
+len:
+Total length of data. In bytes.
+
+data:
+The screenshot in raw format.
+
+
+3 Design decisions and alternatives
+
+The weird padding to align to 32 bytes is so that the client can potentially process the data more efficiently (for SIMD, basically, although aligning to 16 should be enough).
+TODO:
+Apropriate formats from GIMP (or something) instead of inventing our own.
+Chop the picture into chunks as to not clog the connection ?
+Pre-specified length chunks ?

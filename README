@@ -1,0 +1,14 @@
+The WX protocol (working title)
+
+
+The goal here is to provide applications with mechanisms to do useful (and not so useful) stuff.
+Inspired by the stuff X11 already does with programs like xdotool, redshift, OBS, and such.
+
+
+This is a draft/prototype. I don't expect anyone to take it too seriously.
+Feel free to contribute by opening a bug report or something.
+I am making (and typing) this up as i go along, butt there has been some thought put into it beforehand.
+
+
+I wrote this in maybe an hour.
+Still a lot to be added. Something "Extended Window Manager Hints"-like *should* be the first to be copied, though, as they are really useful. Followed by layering (window over/uder windows), and ... There's so much missing, of stuff we don't even notice. Notice a tray like tint2 has a list of windows ? per desktop ? AFAIK there is no such thing in wayland-land. But hey, it is not that complicated.
